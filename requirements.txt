@@ -1,3 +1,4 @@
 Django==5.2
 django-extensions==4.1
-djangorestframework==3.16.9
+djangorestframework==3.16.0
+graphviz==0.20.1
