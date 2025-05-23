@@ -1,22 +1,26 @@
+# Python native imports
 from django.shortcuts import render
 
-# Create your views here.
+# External imports
 from rest_framework import viewsets
-from .models import Proveedor, Marca, Vehiculo, Repuesto
-# from .serializers import ProveedorSerializer, MarcaSerializer, VehiculoSerializer, RepuestoSerializer
+from django.utils import timezone as tz
 
-# class ProveedorViewSet(viewsets.ModelViewSet):
-#     queryset = Proveedor.objects.all()
-#     serializer_class = ProveedorSerializer
+# Local imports
+from repuestos.models import *
+from repuestos.serializers import *
 
-# class MarcaViewSet(viewsets.ModelViewSet):
-#     queryset = Marca.objects.all()
-#     serializer_class = MarcaSerializer
+class ProveedorViewSet(viewsets.ModelViewSet):
+     queryset = Proveedor.objects.all()
+     serializer_class = ProveedorSerializer
 
-# class VehiculoViewSet(viewsets.ModelViewSet):
-#     queryset = Vehiculo.objects.all()
-#     serializer_class = VehiculoSerializer
+class MarcaViewSet(viewsets.ModelViewSet):
+     queryset = Marca.objects.all()
+     serializer_class = MarcaSerializer
 
-# class RepuestoViewSet(viewsets.ModelViewSet):
-#     queryset = Repuesto.objects.all()
-#     serializer_class = RepuestoSerializer
+class VehiculoViewSet(viewsets.ModelViewSet):
+     queryset = Vehiculo.objects.all()
+     serializer_class = VehiculoSerializer
+
+class RepuestoViewSet(viewsets.ModelViewSet):
+     queryset = Repuesto.objects.all()
+     serializer_class = RepuestoSerializer
