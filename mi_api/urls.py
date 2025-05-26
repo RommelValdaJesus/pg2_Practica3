@@ -20,7 +20,7 @@ from django.urls import path, include
 
 # Django Framework imports
 from rest_framework.routers import DefaultRouter
-
+from rest_framework.documentation import include_docs_urls
 # Local imports
 from repuestos.views import ProveedorViewSet, MarcaViewSet, VehiculoViewSet, RepuestoViewSet
 
@@ -35,4 +35,5 @@ router.register(r'repuestos', RepuestoViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('docs/', include_docs_urls(title='API Documentation')),
 ]
