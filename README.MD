@@ -1,14 +1,16 @@
 # API de Repuestos para Vehículos
 
 ## Descripción
-Esta API permite gestionar proveedores, marcas, vehículos y repuestos. Facilita la administración de información sobre piezas automotrices y sus fabricantes, proporcionando endpoints para realizar operaciones CRUD.
+Esta API permite gestionar proveedores y repuestos de manera eficiente. Los proveedores pueden registrarse y establecer precios para repuestos predefinidos, evitando la necesidad de crear cada pieza manualmente. Los usuarios pueden consultar repuestos y encontrar proveedores con sus respectivos precios.
 
 ## Diagrama de Modelos
 Para generar el diagrama de modelos, usa el siguiente comando en Django Extensions:
 
 ```bash
-python manage.py graph_models repuestos -o modelos.png 
+python manage.py graph_models repuestos -o repuestos.png 
+
 ```
+
 ## Documentación de la API
 Esta API incluye una interfaz de documentación automática en localhost. Para acceder a la documentación interactiva, visita la siguiente URL una vez que el servidor esté en ejecución:
 - Documentación automática: http://localhost:8000/docs/
@@ -16,40 +18,14 @@ Esta API incluye una interfaz de documentación automática en localhost. Para a
 En esta página, podrás visualizar todos los endpoints disponibles, sus métodos y ejemplos de uso, facilitando la integración y pruebas.
 
 
-## Endpoints
+## Diagrama de Modelos
 
-## Proveedores
-- GET /api/proveedores/ → Lista todos los proveedores.
-- POST /api/proveedores/ → Crea un nuevo proveedor.
-- GET /api/proveedores/{id}/ → Obtiene un proveedor por ID.
-- PUT /api/proveedores/{id}/ → Actualiza un proveedor.
-- DELETE /api/proveedores/{id}/ → Elimina un proveedor.
-
-## Marcas
-- GET /api/marcas/ → Lista todas las marcas.
-- POST /api/marcas/ → Crea una nueva marca.
-- GET /api/marcas/{id}/ → Obtiene una marca por ID.
-- PUT /api/marcas/{id}/ → Actualiza una marca.
-- DELETE /api/marcas/{id}/ → Elimina una marca.
-
-## Vehículos
-- GET /api/vehiculos/ → Lista todos los vehículos.
-- POST /api/vehiculos/ → Crea un nuevo vehículo.
-- GET /api/vehiculos/{id}/ → Obtiene un vehículo por ID.
-- PUT /api/vehiculos/{id}/ → Actualiza un vehículo.
-- DELETE /api/vehiculos/{id}/ → Elimina un vehículo.
-
-## Repuestos
-- GET /api/repuestos/ → Lista todos los repuestos.
-- POST /api/repuestos/ → Crea un nuevo repuesto.
-- GET /api/repuestos/{id}/ → Obtiene un repuesto por ID.
-- PUT /api/repuestos/{id}/ → Actualiza un repuesto.
-- DELETE /api/repuestos/{id}/ → Elimina un repuesto.
+![Diagrama](repuestos.png)
 
 
 ## Caso de Uso
 
-1. Crear un proveedor:
+1. Registro de un proveedor:
 
 ```bash
 curl -X POST "http://localhost:8000/api/proveedores/" \
@@ -57,43 +33,51 @@ curl -X POST "http://localhost:8000/api/proveedores/" \
 -d '{
     "nombre": "Repuestos ABC",
     "contacto": "Juan Pérez",
+    "email": "juan@example.com",
     "ubicacion": "Bolivia"
 }'
 ```
 
-2. Crear una marca:
+2. Asignar precio a un repuesto existente:
 
 ```bash
-curl -X POST "http://localhost:8000/api/marcas/" \
+curl -X PATCH "http://localhost:8000/api/repuestos/1/" \
 -H "Content-Type: application/json" \
 -d '{
-    "nombre": "Toyota",
-    "pais_origen": "Japón"
-}'
-```
-
-3. Crear un Vehiculo:
-
-```bash
-curl -X POST "http://localhost:8000/api/vehiculos/" \
--H "Content-Type: application/json" \
--d '{
-    "modelo": "Corolla",
-    "año": 2000,
-    "marca": 1
-}'
-```
-
-4. Agregar un repuesto al vehiculo:
-
-```bash
-curl -X POST "http://localhost:8000/api/repuestos/" \
--H "Content-Type: application/json" \
--d '{
-    "nombre": "Filtro de aire",
-    "descripcion": "Filtro para motor",
     "precio": 40,
-    "proveedor": 1,
-    "vehiculo": 1
+    "moneda": "BOB",
+    "proveedor": 1
 }'
 ```
+
+3. Consultar repuestos y precios:
+
+```bash
+curl -X GET "http://localhost:8000/api/repuestos/" \
+-H "Content-Type: application/json"
+```
+## Para clientes:
+Los clientes pueden buscar repuestos y encontrar proveedores con sus respectivos precios.
+
+## 1️. Consultar repuestos disponibles
+
+```bash
+curl -X GET "http://localhost:8000/api/repuestos/" \
+
+```
+
+- Esto devolverá una lista de repuestos con detalles y precios ofrecidos por distintos proveedores.
+
+## 2️.  Buscar repuestos por nombre
+
+```bash
+curl -X GET "http://localhost:8000/api/repuestos/?nombre=filtro de aire" \
+
+```
+
+- Esto ayudará a los clientes a encontrar piezas específicas y comparar precios fácilmente.
+
+## Beneficios
+-  Simplificación: Los proveedores solo ingresan sus precios en repuestos ya existentes.
+-  Estandarización: Todos los repuestos están definidos en la base de datos.
+-  Optimización: Menos carga para los proveedores, más facilidad para los clientes.
